@@ -13,8 +13,8 @@
   }
 
   const keyUp = e => {
-    // Shift + Space
-    if (e.shiftKey && e.keyCode == '32') {
+    // Shift + Backspace
+    if (e.shiftKey && e.keyCode === 8) {
       deleteHoveredMessage()
     }
   }
