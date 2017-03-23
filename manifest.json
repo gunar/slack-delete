@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "content_scripts": [ {
+        "exclude_globs":    [  ],
+        "include_globs":    [ "*" ],
+        "js":               [ "index.js" ],
+        "matches":          [
+          "https://*.slack.com/messages/*",
+          "http://*.slack.com/messages/*"
+        ],
+        "run_at": "document_end"
+    } ],
+    "converted_from_user_script": true,
+    "description":  "Use Shift+Space delete the message under the cursor.",
+    "name":         "Slack Easy Delete",
+    "version":      "1",
+    "icons": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+}
