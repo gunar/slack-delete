@@ -7,9 +7,15 @@
 (function() {
   'use strict';
   const deleteHoveredMessage = () => {
-    document.querySelector('ts-message:hover button[data-action="actions_menu"]').click()
-    document.querySelector('li#delete_link a').click()
-    document.querySelector('button.btn.dialog_go.btn_danger').click()
+    const actionsBtn = document.querySelector('ts-message:hover button[data-action="actions_menu"]')
+    if (!actionsBtn) return
+    actionsBtn.click()
+    const deleteBtn = document.querySelector('li#delete_link a')
+    if (!deleteBtn) return
+    deleteBtn.click()
+    const okBtn = document.querySelector('button.btn.dialog_go.btn_danger')
+    if (!okBtn) return
+    okBtn.click()
   }
 
   const keyUp = e => {
