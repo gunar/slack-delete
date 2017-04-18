@@ -5,5 +5,5 @@ the cursor.
 
 The preferred method of installation is through the [Extension](https://chrome.google.com/webstore/detail/aofnbjmngnhhacenlhfdodidiebiicob/) at Google's Webstore.
 
-![screnshot](screenshot.png)
+![preview](preview.gif)
 
