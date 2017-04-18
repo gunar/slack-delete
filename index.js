@@ -8,16 +8,13 @@
   'use strict';
   const _x_id = () => `${window.boot_data.version_uid.substring(0, 8)}-${(new Date).getTime()/1000.0}`
 
-  // Limit is in ms
-  const throttle = (callback, limit = 100) => {
-    var wait = false
-    return function() { // We return a throttled function
+  const throttle = (callback, limitMs = 100) => {
+    let wait = false
+    return function throttled() {
       if (!wait) {
-        callback.call()
         wait = true // Prevent future invocations for a time
-        setTimeout(function() {
-          wait = false
-        }, limit)
+        callback()
+        setTimeout(() => { wait = false }, limitMs)
       }
     }
   }
