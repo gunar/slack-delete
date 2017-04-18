@@ -20,9 +20,9 @@
     "index.js"
   ],
   "converted_from_user_script": true,
-  "description": "Use Shift+Space delete the message under the cursor.",
+  "description": "Use Control+Shift+Space delete the message under the cursor.",
   "name": "Slack Easy Delete",
-  "version": "1",
+  "version": "2",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
