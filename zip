@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+zip slack-delete.zip icon*.png *.js manifest.json                                                                                 
