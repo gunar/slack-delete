@@ -6,7 +6,7 @@
 
 (function() {
   'use strict';
-  const _x_id = () => `${window.boot_data.version_uid.substring(0, 8)}-${(new Date).getTime()/1000.0}`
+  const _x_id = () => `${window.boot_data.version_uid.substring(0, 8)}-${(new Date).getTime()/1000}`
 
   const throttle = (callback, limitMs = 100) => {
     let wait = false
@@ -20,8 +20,8 @@
   }
 
   const queryString = obj => {
-    var str = [];
-    for (var p in obj)
+    const str = [];
+    for (const p in obj)
       if (obj.hasOwnProperty(p)) {
         str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
       }
@@ -30,31 +30,25 @@
 
   const deleteHoveredMessage = () => {
     const el = document.querySelector('ts-message:hover')
-    el.style.display = "none"
+    el.style.display = 'none'
     const ts = el.getAttribute('data-ts')
     const channel = el.getAttribute('data-model-ob-id')
     const token = window.boot_data.api_token
     const url = `https://${window.location.host}/api/chat.delete?_x_id=${_x_id()}`
-    const params = queryString({
-      channel,
-      token,
-      ts
-    })
-
+    const params = queryString({ channel, token, ts })
     const http = new XMLHttpRequest()
-    http.open("POST", url, true)
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    http.open('POST', url, true)
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
     http.send(params)
   }
 
   const throttledDelete = throttle(deleteHoveredMessage)
 
-  const handleKeyUp = e => {
-    // Shift + Backspace
-    if (e.shiftKey && e.keyCode === 8) {
+  const onKeyUp = e => {
+    if (e.ctrlKey && e.shiftKey && e.code === 'Space') {
       throttledDelete()
     }
   }
 
-  document.addEventListener('keyup', handleKeyUp, false)
+  document.addEventListener('keyup', onKeyUp, false)
 })();
