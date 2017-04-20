@@ -30,7 +30,7 @@
 
   const deleteHoveredMessage = () => {
     const el = document.querySelector('ts-message:hover')
-    el.style.display = 'none'
+    if (!el) return
     const ts = el.getAttribute('data-ts')
     const channel = el.getAttribute('data-model-ob-id')
     const token = window.boot_data.api_token
@@ -40,6 +40,7 @@
     http.open('POST', url, true)
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
     http.send(params)
+    el.parentNode.removeChild(el)
   }
 
   const throttledDelete = throttle(deleteHoveredMessage)
