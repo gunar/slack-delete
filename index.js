@@ -6,18 +6,37 @@
 
 (function() {
   'use strict';
+
+  function makeRequest (url, params) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url, true);
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(xhr.response);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send(params);
+    });
+  }
+
   const _x_id = () => `${window.boot_data.version_uid.substring(0, 8)}-${(new Date).getTime()/1000}`
 
-  const throttle = (callback, limitMs = 100) => {
-    let wait = false
-    return function throttled() {
-      if (!wait) {
-        wait = true // Prevent future invocations for a time
-        callback()
-        setTimeout(() => { wait = false }, limitMs)
-      }
-    }
-  }
+  var maxConcurrent = 3;
+  var maxQueue = Infinity;
+  var queue = new Queue(maxConcurrent, maxQueue);
 
   const queryString = obj => {
     const str = [];
@@ -28,26 +47,28 @@
     return str.join('&')
   }
 
+  const deleteMessage = (...args) => 
+    queue.add(() =>
+      (({ channel, ts }) => {
+        const token = window.boot_data.api_token
+        const params = queryString({ channel, token, ts })
+        const url = `https://${window.location.host}/api/chat.delete?_x_id=${_x_id()}`
+        return makeRequest(url, params)
+      })(...args)
+    )
+
   const deleteHoveredMessage = () => {
     const el = document.querySelector('ts-message:hover')
     if (!el) return
     const ts = el.getAttribute('data-ts')
     const channel = el.getAttribute('data-model-ob-id')
-    const token = window.boot_data.api_token
-    const url = `https://${window.location.host}/api/chat.delete?_x_id=${_x_id()}`
-    const params = queryString({ channel, token, ts })
-    const http = new XMLHttpRequest()
-    http.open('POST', url, true)
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
-    http.send(params)
+    deleteMessage({ channel, ts })
     el.parentNode.removeChild(el)
   }
 
-  const throttledDelete = throttle(deleteHoveredMessage)
-
   const onKeyUp = e => {
     if (e.ctrlKey && e.shiftKey && e.code === 'Space') {
-      throttledDelete()
+      deleteHoveredMessage()
     }
   }
 
