@@ -66,9 +66,9 @@
     el.parentNode.removeChild(el)
   }
 
-  const shouldDelete = e => e.shiftKey && e.keyCode === 8 // shift + backspace
+  // const shouldDelete = e => e.shiftKey && e.keyCode === 8 // shift + backspace
 
-  // const shouldDelete = e => e.ctrlKey && e.shiftKey && e.code === 'Space'
+  const shouldDelete = e => e.ctrlKey && e.shiftKey && e.code === 'Space'
 
   const onKeyUp = e => {
     if (shouldDelete(e)) deleteHoveredMessage()

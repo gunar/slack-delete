@@ -1,3 +1,5 @@
+// From https://github.com/azproduction/promise-queue
+
 /* global define, Promise */
 ;(function(root, factory) {
   'use strict'
