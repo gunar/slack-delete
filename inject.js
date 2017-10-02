@@ -13,4 +13,8 @@ function injectScript(file_path, tag) {
   script.setAttribute('src', file_path)
   node.appendChild(script)
 }
-injectScript(chrome.extension.getURL('index.js'), 'body')
+injectScript(chrome.extension.getURL('promise-queue.js'), 'body')
+// Dirty hack to fix "Uncaught ReferenceError: Queue is not defined"
+setTimeout(() =>
+  injectScript(chrome.extension.getURL('index.js'), 'body')
+  , 300)
