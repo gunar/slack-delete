@@ -58,10 +58,14 @@
     )
 
   const deleteHoveredMessage = () => {
-    const el = document.querySelector('ts-message:hover')
+    const el = document.querySelector('.c-message--hover')
     if (!el) return
-    const ts = el.getAttribute('data-ts')
-    const channel = el.getAttribute('data-model-ob-id')
+    // extract channel and ts from link
+    // example href: /archives/C8ZM37LNQ/p1532163134000047
+    const linkHref = el.querySelector('.c-timestamp').getAttribute('href')
+    const hrefParts = linkHref.split('/')
+    const channel = hrefParts[2]
+    const ts = hrefParts[3].substr(1, 10) + '.' + hrefParts[3].substr(11)
     enqueueDeleteMessage({ channel, ts })
     el.parentNode.removeChild(el)
   }
